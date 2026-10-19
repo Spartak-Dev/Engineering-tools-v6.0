@@ -1,0 +1,1108 @@
+/* ============================================================
+   Engineering Tools 6.0 - Universal Arsenal Stylesheet
+   Підтримка калькуляторів 1-11, Arsenal v3.0 та Dark/Light тем
+   ============================================================ */
+
+/* ---------- Базові стилі та скидання ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #121214;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 10px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body, .modal, .modal-content {
+    overscroll-behavior-y: contain;
+}
+
+.container {
+    width: 100%;
+    max-width: 520px;
+    background: #1a1a1d;
+    border-radius: 12px;
+    padding: 25px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    border: 1px solid #2a2a2f;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #4CAF50;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+h3 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* ---------- Головні кнопки калькуляторів ---------- */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    background: #2a2a2f;
+    color: #ccc;
+    border: 1px solid #444;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+button:hover {
+    background: #3a3a40;
+    border-color: #4CAF50;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.new-tool {
+    border-left: 4px solid #ff9900 !important;
+}
+
+.charge-tool {
+    border-left: 4px solid #4CAF50 !important;
+}
+
+.audit-tool {
+    border-left: 4px solid #2196F3 !important;
+}
+
+.architect-tool {
+    border-left: 4px solid #9c27b0 !important;
+}
+
+.converter-btn {
+    background: #2f2f35;
+    border-color: #555;
+    text-align: center;
+    font-weight: 600;
+}
+
+.save-btn {
+    background: #4CAF50;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    text-align: center;
+}
+
+.save-btn:hover {
+    background: #45a049;
+    color: #fff;
+}
+
+/* ---------- Кнопки у формах і модалках ---------- */
+.btn-form {
+    background: #2a2a2f;
+    color: #ccc;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.btn-form:hover {
+    background: #3a3a40;
+    border-color: #4CAF50;
+    color: #fff;
+}
+
+.btn-primary {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: #43a047;
+    border-color: transparent;
+}
+
+.btn-secondary {
+    background: #3a3a3e;
+    color: #bbb;
+    border-color: #4e4e54;
+}
+
+.btn-secondary:hover {
+    background: #48484e;
+    color: #fff;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.form-actions button {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+/* ---------- Поля вводу та селектори ---------- */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #aaa;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.form-group small {
+    display: block;
+    color: #888;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: #222226;
+    color: #eee;
+    border: 1px solid #444;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    outline: none;
+}
+
+select option {
+    background: #1e1e22;
+    color: #eee;
+    padding: 5px;
+}
+
+/* Спеціальний блок для двох полів (V та A) поруч */
+.dual-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.dual-inputs > div {
+    flex: 1;
+}
+
+/* ---------- Модальні вікна ---------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(2px);
+    overflow-y: auto;
+    padding: 10px 0;
+}
+
+.modal-content {
+    background: #1a1a1d;
+    margin: 30px auto;
+    padding: 24px;
+    border-radius: 12px;
+    width: 92%;
+    max-width: 500px;
+    border: 1px solid #333;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close {
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    font-size: 26px;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: #ff5252;
+}
+
+/* ---------- Результати розрахунків ---------- */
+.result-area {
+    background: #111113;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    margin-top: 16px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.result-box {
+    background: #1e1e22;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    margin-bottom: 12px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    border-bottom: 1px dotted #333;
+    padding-bottom: 5px;
+}
+
+/* ---------- АРСЕНАЛ v3.0: Головний список та елементи ---------- */
+.arsenal-section {
+    margin-top: 30px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.device-list {
+    background: #111113;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    min-height: 45px;
+    font-size: 13px;
+    border: 1px solid #2a2a2f;
+}
+
+.device-item {
+    border-bottom: 1px solid #2e2e33;
+    padding: 10px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.device-item:last-child {
+    border-bottom: none;
+}
+
+.device-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.device-title {
+    font-weight: 600;
+    color: #eee;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.device-meta {
+    font-size: 11px;
+    color: #888;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Бейджі ролей та категорій в Арсеналі */
+.role-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    display: inline-block;
+}
+
+.badge-source {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+    border: 1px solid rgba(76, 175, 80, 0.35);
+}
+
+.badge-load {
+    background: rgba(33, 150, 243, 0.15);
+    color: #2196F3;
+    border: 1px solid rgba(33, 150, 243, 0.35);
+}
+
+.badge-rechargeable {
+    background: rgba(255, 153, 0, 0.15);
+    color: #ff9900;
+    border: 1px solid rgba(255, 153, 0, 0.35);
+}
+
+.category-badge {
+    background: #25252a;
+    color: #aaa;
+    border: 1px solid #3a3a40;
+    font-size: 10.5px;
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+.add-device-btn {
+    background: #333338;
+    font-size: 12px;
+    padding: 10px;
+    margin-top: 8px;
+    text-align: center;
+    border-color: #4a4a50;
+}
+
+.add-device-btn:hover {
+    background: #42424a;
+    border-color: #4CAF50;
+}
+
+/* ---------- АРСЕНАЛ v3.0: Форма додавання та контролі ---------- */
+.category-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.category-input-group select {
+    flex: 1;
+}
+
+.btn-inline {
+    width: auto !important;
+    padding: 10px 14px;
+    margin-bottom: 0 !important;
+    white-space: nowrap;
+}
+
+.role-accent-box {
+    background: #18181b;
+    border: 1px solid #333;
+    border-left: 3px solid #ff9900;
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+/* Кастомний чекбокс для освітлення/люменів */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    color: #ddd;
+    margin-top: 10px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: #4CAF50;
+    cursor: pointer;
+}
+
+/* ---------- АРСЕНАЛ: Слот-контейнери у калькуляторах ---------- */
+.arsenal-selector-container {
+    margin-bottom: 15px;
+}
+
+.arsenal-ui-box {
+    background: #1e1e22;
+    border: 1px solid #3a3a3e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.arsenal-ui-title {
+    color: #ff9900;
+    font-weight: 600;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.arsenal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.arsenal-tag {
+    display: inline-block;
+    background: #2a2a2f;
+    color: #ccc;
+    padding: 5px 10px;
+    border-radius: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #444;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.arsenal-tag:hover {
+    background: #333338;
+    border-color: #ff9900;
+}
+
+.arsenal-tag.selected {
+    background: #4CAF50;
+    color: #fff;
+    border-color: #4CAF50;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.4);
+}
+
+/* ---------- Конвертер величин ---------- */
+.converter-content {
+    background: #161619;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px solid #333;
+    display: none;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 3px;
+}
+
+.formula-box {
+    background: #222226;
+    padding: 8px 10px;
+    border-radius: 5px;
+    margin-bottom: 6px;
+    font-size: 12.5px;
+    color: #4CAF50;
+    border-left: 3px solid #4CAF50;
+}
+
+/* ---------- Ліхтарик (Кнопка 6) ---------- */
+.flashlight-accent-box {
+    background: #1c1c20;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ff9900;
+    margin-top: 10px;
+}
+
+#flashlight_chip_info {
+    color: #4CAF50;
+    font-size: 12.5px;
+    padding: 8px 10px;
+    background: #111;
+    border-radius: 5px;
+    margin-top: 8px;
+    border-left: 3px solid #4CAF50;
+}
+
+/* ---------- Сонячні панелі та Графік (Кнопка 11) ---------- */
+#solar_chart {
+    background: #151518;
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#solar_status {
+    border-left: 4px solid #2196F3;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ---------- Футер ---------- */
+.footer {
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    margin-top: 25px;
+}
+
+/* ============================================================
+   СВІТЛА ТЕМА (LIGHT MODE)
+   ============================================================ */
+@media (prefers-color-scheme: light) {
+    body {
+        background: #f0f2f5;
+        color: #2c3e50;
+    }
+
+    .container {
+        background: #ffffff;
+        border-color: #e2e8f0;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    h2, h3 {
+        color: #2e7d32;
+    }
+
+    button {
+        background: #f8fafc;
+        color: #334155;
+        border-color: #cbd5e1;
+    }
+
+    button:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+        border-color: #2e7d32;
+    }
+
+    .converter-btn, .add-device-btn {
+        background: #f1f5f9;
+        color: #334155;
+        border-color: #cbd5e1;
+    }
+
+    .converter-btn:hover, .add-device-btn:hover {
+        background: #e2e8f0;
+    }
+
+    .save-btn {
+        background: #2e7d32;
+        color: #fff;
+    }
+
+    .save-btn:hover {
+        background: #27672a;
+    }
+
+    .btn-form {
+        background: #f1f5f9;
+        color: #334155;
+        border-color: #cbd5e1;
+    }
+
+    .btn-form:hover {
+        background: #e2e8f0;
+    }
+
+    .btn-primary {
+        background: #2e7d32;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background: #27672a;
+    }
+
+    .btn-secondary {
+        background: #e2e8f0;
+        color: #475569;
+        border-color: #cbd5e1;
+    }
+
+    .btn-secondary:hover {
+        background: #cbd5e1;
+        color: #1e293b;
+    }
+
+    input, select, textarea {
+        background: #ffffff;
+        color: #1e293b;
+        border-color: #cbd5e1;
+    }
+
+    select option {
+        background: #ffffff;
+        color: #1e293b;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #2e7d32;
+        box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+    }
+
+    .form-group label {
+        color: #475569;
+    }
+
+    .form-group small {
+        color: #64748b;
+    }
+
+    .modal {
+        background: rgba(15, 23, 42, 0.5);
+    }
+
+    .modal-content {
+        background: #ffffff;
+        border-color: #e2e8f0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .close {
+        color: #94a3b8;
+    }
+
+    .close:hover {
+        color: #ef4444;
+    }
+
+    .result-area, .result-box, .device-list, .converter-content {
+        background: #f8fafc;
+        border-color: #e2e8f0;
+        color: #1e293b;
+    }
+
+    .result-row {
+        border-bottom-color: #e2e8f0;
+    }
+
+    .device-item {
+        border-bottom-color: #e2e8f0;
+    }
+
+    .device-title {
+        color: #1e293b;
+    }
+
+    .category-badge {
+        background: #e2e8f0;
+        color: #475569;
+        border-color: #cbd5e1;
+    }
+
+    .role-accent-box {
+        background: #f8fafc;
+        border-color: #e2e8f0;
+        border-left-color: #f59e0b;
+    }
+
+    .checkbox-container {
+        color: #334155;
+    }
+
+    .arsenal-ui-box {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    .arsenal-tag {
+        background: #ffffff;
+        color: #334155;
+        border-color: #cbd5e1;
+    }
+
+    .arsenal-tag:hover {
+        background: #e2e8f0;
+    }
+
+    .arsenal-tag.selected {
+        background: #2e7d32;
+        color: #ffffff;
+        border-color: #2e7d32;
+    }
+
+    .formula-box {
+        background: #eef7ee;
+        color: #1b5e20;
+        border-left-color: #2e7d32;
+    }
+
+    .flashlight-accent-box {
+        background: #fff8ec;
+        border-color: #f59e0b;
+    }
+
+    #flashlight_chip_info {
+        background: #eef7ee;
+        color: #1b5e20;
+        border-left-color: #2e7d32;
+    }
+
+    #solar_chart {
+        background: #f8fafc;
+    }
+
+    .footer {
+        color: #94a3b8;
+    }
+}
+
+/* ---------- Мобільна адаптивність ---------- */
+@media (max-width: 480px) {
+    body {
+        padding: 10px 5px;
+    }
+
+    .container {
+        padding: 18px 12px;
+    }
+
+    button {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 18px 14px;
+        margin: 15px auto;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    h3 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .dual-inputs {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .category-input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-inline {
+        width: 100% !important;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+}
+/* 🟢 Компактні кнопки пресетів для Кнопки 6 */
+.preset-buttons-grid {
+    display: grid;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.btn-preset {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #e0e0e0;
+    padding: 7px 3px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.25;
+}
+
+.btn-preset:hover, .btn-preset:active {
+    background: rgba(255, 153, 0, 0.2);
+    border-color: #ff9900;
+    color: #ffffff;
+}
+
+.btn-preset.active {
+    background: #ff9900;
+    border-color: #ff9900;
+    color: #121212;
+    font-weight: bold;
+}
+/* Автоматичний колір для блоку подяки */
+.guide-donate-box {
+    background: rgba(76, 175, 80, 0.08);
+    border-left: 3px solid #4CAF50;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #222222; /* Чорний для світлої теми */
+}
+
+/* Якщо увімкнена темна тема системи */
+@media (prefers-color-scheme: dark) {
+    .guide-donate-box {
+        color: #e0e0e0; /* Світлий для темної теми */
+    }
+}
+/* ==========================================================================
+   Калькулятор — стилі з підтримкою темної та світлої теми
+   ========================================================================== */
+
+.calc-root {
+  /* ---- Темна тема (за замовчуванням) ---- */
+  --txt:        #ccc;                   /* основний текст */
+  --txt-muted:  #9bb8d4;                /* приглушений текст */
+  --brd:        #444;                   /* рамки th / hr */
+  --brd-row:    #2a2a2a;                /* лінія між рядками */
+  --bg-head:    rgba(255, 255, 255, 0.05);
+
+  --val-low:    #81c784;                /* зелені значення (низьковольтні) */
+  --val-high:   #ffb74d;                /* оранжеві значення (високонавантажені) */
+
+  --warn-bg:    rgba(255, 153, 0, 0.07);
+  --warn-accent:#ff9900;
+
+  --btn-low-bg: rgba(33, 150, 243, 0.10);
+  --btn-low-brd:#2196f3;
+  --btn-low-txt:#64b5f6;
+
+  --btn-high-bg: rgba(233, 30, 99, 0.08);
+  --btn-high-brd:#e91e63;
+  --btn-high-txt:#ff4081;
+}
+
+/* ---- Світла тема ---- */
+@media (prefers-color-scheme: light) {
+  .calc-root {
+    --txt:        #666;                 /* ⬅️ трохи сіріший, але добре читається */
+    --txt-muted:  #7a8694;
+    --brd:        #c9c9c9;
+    --brd-row:    #ececec;
+    --bg-head:    rgba(0, 0, 0, 0.04);
+
+    --val-low:    #2e7d32;
+    --val-high:   #b26500;
+
+    --warn-bg:    rgba(255, 153, 0, 0.12);
+    --warn-accent:#b36b00;
+
+    --btn-low-bg: rgba(33, 150, 243, 0.10);
+    --btn-low-brd:#1976d2;
+    --btn-low-txt:#1565c0;
+
+    --btn-high-bg: rgba(233, 30, 99, 0.08);
+    --btn-high-brd:#c2185b;
+    --btn-high-txt:#ad1457;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Розділювач
+   ------------------------------------------------------------------------- */
+.calc-hr {
+  border: 0;
+  border-top: 1px solid var(--brd);
+  margin: 15px 0;
+}
+
+/* -------------------------------------------------------------------------
+   Блок попередження
+   ------------------------------------------------------------------------- */
+.warn-box {
+  margin-top: 18px;
+  padding: 12px 12px 14px 12px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-accent);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.warn-box__title {
+  font-size: 12.5px;
+  font-weight: bold;
+  color: var(--warn-accent);
+  margin-bottom: 6px;
+}
+
+.warn-box__text {
+  font-size: 11.5px;
+  color: var(--txt);
+  line-height: 1.5;
+  margin: 0 0 6px 0;
+}
+
+.warn-box__text--last {
+  font-size: 11.5px;
+  color: var(--txt);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   Контейнер кнопок-перемикачів
+   ------------------------------------------------------------------------- */
+.tables-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* -------------------------------------------------------------------------
+   Кнопки-перемикачі
+   ------------------------------------------------------------------------- */
+.ref-btn {
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1.35;
+}
+
+.ref-btn__sub {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--txt-muted);
+}
+
+.ref-btn--low {
+  background: var(--btn-low-bg);
+  border: 1px solid var(--btn-low-brd);
+  color: var(--btn-low-txt);
+}
+
+.ref-btn--high {
+  background: var(--btn-high-bg);
+  border: 1px solid var(--btn-high-brd);
+  color: var(--btn-high-txt);
+}
+
+/* -------------------------------------------------------------------------
+   Обгортка таблиці
+   ------------------------------------------------------------------------- */
+.ref-table {
+  display: none;
+  margin-top: 12px;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--brd);
+}
+
+.ref-table--open {
+  display: block;
+}
+
+.ref-table__head {
+  font-size: 11.5px;
+  font-weight: bold;
+  padding: 8px 10px;
+}
+
+.ref-table__head--low {
+  background: rgba(33, 150, 243, 0.15);
+  color: var(--btn-low-txt);
+}
+
+.ref-table__head--high {
+  background: rgba(233, 30, 99, 0.15);
+  color: var(--btn-high-txt);
+}
+
+/* -------------------------------------------------------------------------
+   Сама таблиця
+   ------------------------------------------------------------------------- */
+.ref-table__tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  color: var(--txt);
+}
+
+.ref-table__tbl thead tr {
+  background: var(--bg-head);
+  text-align: left;
+}
+
+.ref-table__tbl th {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--brd);
+  font-size: 10.5px;
+}
+
+.ref-table__tbl td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--brd-row);
+}
+
+.ref-table__tbl tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Кольорове значення (середнє) */
+.ref-table__tbl td.val-low  { color: var(--val-low); }
+.ref-table__tbl td.val-high { color: var(--val-high); }
+/* Модалка 11 — сонячні панелі */
+.solar-modal-content {
+    max-height: calc(100dvh - 60px);
+    overflow-y: auto;
+}
+
+/* Канавс — резиновий, без спотворення пропорцій */
+#solar_chart {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 400 / 150;
+}
+
+/* Дуже вузькі екрани — трохи менше повітря */
+@media (max-width: 480px) {
+    .solar-modal-content {
+        max-height: calc(100dvh - 30px);
+    }
+}
