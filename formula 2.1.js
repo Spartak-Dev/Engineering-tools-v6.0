@@ -12,7 +12,7 @@ const CHEMISTRY = {
         vNom:         3.7,
         vMax:         4.2,
         vMin:         2.5,
-        dod:          0.90,
+        dod:          1.00,
         dodSafe:      0.80,
         effCharge:    0.85,
         effDischarge: 0.85,
@@ -204,10 +204,15 @@ function calculateLightTime(capacityWh, percentStart, percentEnd, watts, type = 
  * Кнопка 6 — Ліхтарик
  */
 function calculateFlashlightTime(whFull, percent, lumens, type = 'lithium') {
-    const dod = getDoD(type);
-    const eff = chem(type).effDischarge;
-    const wh = whFull * (percent / 100) * dod * eff;
-    return (wh / (lumens / 100)) * 60;
+    const c = chem(type);
+    const dod = c.dod;
+    const eff = c.effDischarge;
+
+    // DoD  це поріг знизу, а не множник
+    const minPercent = (1 - dod) * 100;
+    const usablePercent = Math.max(0, percent - minPercent);
+    const wh = whFull * (usablePercent / 100) * eff;
+    return (wh * EFFICIENCY.FLASHLIGHT_DRIVER / (lumens / 100)) * 60;
 }
 
 function getChipLumensPerWatt(chip) {
@@ -216,7 +221,10 @@ function getChipLumensPerWatt(chip) {
 
 function calculateFlashlightTimeFromChip(whFull, percent, userLumens, chip, driverEff, type = 'lithium') {
     const dod = getDoD(type);
-    const wh = whFull * (percent / 100) * dod;
+    const minPercent = (1 - dod) * 100;
+    const usablePercent = Math.max(0, percent - minPercent);
+    const wh = whFull * (usablePercent / 100);
+
     const ratio = getChipLumensPerWatt(chip);
     const powerDraw = userLumens / ratio;
     return (wh * driverEff / powerDraw) * 60;
@@ -224,7 +232,9 @@ function calculateFlashlightTimeFromChip(whFull, percent, userLumens, chip, driv
 
 function calculateFlashlightTimeFromWatts(whFull, percent, watts, driverEff, type = 'lithium') {
     const dod = getDoD(type);
-    const wh = whFull * (percent / 100) * dod;
+    const minPercent = (1 - dod) * 100;
+    const usablePercent = Math.max(0, percent - minPercent);
+    const wh = whFull * (usablePercent / 100);
     return (wh * driverEff / watts) * 60;
 }
 
@@ -274,9 +284,14 @@ function calculateRechargeTime(capacityWh, currentPercent, chargePower, type) {
     const neededWh = capacityWh * ((100 - currentPercent) / 100);
     const efficiency = getChargeEfficiency(type);
     const effectivePower = chargePower * efficiency;
-    const hours = effectivePower > 0 ? neededWh / effectivePower : 0;
 
-    return { neededWh, effectivePower, hours };
+    // Використовуємо ту саму CV-модель, що й Кнопка 1 — щоб обидві кнопки
+    // давали однакову цифру для одного й того ж сценарію.
+    const totalMinutes = calculatePowerbankChargeTime(
+        capacityWh, chargePower, currentPercent, type
+    );
+
+    return { neededWh, effectivePower, hours: totalMinutes / 60 };
 }
 
 // ============================================================================
@@ -416,6 +431,12 @@ const UNCERTAINTY = {
     REL_DOD:        0.04  // ±4% — похибка оцінки заряду дешевими платами ПБ
 };
 
+/*const UNCERTAINTY = {
+    REL_POWER:      0.05, // ±5% — потужність споживача (мережа, нагрів, піки)
+    REL_CAPACITY:   0.03, // ±3% — ємність АКБ (похибка аудиту)
+    REL_EFFICIENCY: 0.03, // ±3% — ККД перетворювача (плаває під навантаженням)
+    REL_DOD:        0.02  // ±2% — індикатор заряду (похибка плати ПБ)
+}; */
 
 /** Загальна відносна похибка δT (частка 0..1). Очікувано ~0.07-0.08 */
 function getRelativeUncertainty() {
@@ -437,7 +458,7 @@ function getUncertaintyMinutes(totalMinutes) {
 /** Абсолютна похибка потужності (у W) для Кнопки 7 */
 function getUncertaintyWatts(watts) {
     if (!watts || watts <= 0) return 0;
-    return watts * getRelativeUncertainty();
+    return watts * UNCERTAINTY.REL_POWER; // ← × 0.06
 }
 
 /** Відсоток загальної похибки для показу в UI */
@@ -458,7 +479,12 @@ const AUDIT_UNCERTAINTY = {
     REL_NOMINAL:    0.05  // ±5% — заводський допуск ємності
 };
 
-
+/*const AUDIT_UNCERTAINTY = {
+    REL_LOAD_W:     0.05, // ±5% — точність вказаної потужності навантаження
+    REL_TIME:       0.03, // ±3% — похибка вимірювання часу (ручне коло)
+    REL_PERCENT_PB: 0.02, // ±2% — індикатор заряду ПБ (на кожен з p1, p2)
+    REL_NOMINAL:    0.05  // ±5% — допуск заявленої ємності від виробника
+}; */
 
 /** Δ(realWh) / realWh для realWh = W × t */
 function getRealWhUncertainty(realWh) {
